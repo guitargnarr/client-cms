@@ -1,0 +1,21 @@
+{
+  "site_id": "clater-jewelers",
+  "business_name": "Clater Jewelers",
+  "tagline": null,
+  "phone": null,
+  "email": null,
+  "address": null,
+  "hours": {
+    "monday": "10am - 6pm",
+    "tuesday": "10am - 6pm",
+    "wednesday": "10am - 6pm",
+    "thursday": "10am - 6pm",
+    "friday": "10am - 6pm",
+    "saturday": "10am - 4pm",
+    "sunday": "Closed"
+  },
+  "services": [],
+  "staff": [],
+  "menu_items": [],
+  "promotions": []
+}
