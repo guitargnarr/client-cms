@@ -21,7 +21,8 @@ app.add_middleware(
 )
 
 # Simple file-based storage (upgrade to Postgres later)
-DATA_DIR = Path("data")
+# Use /tmp for Vercel serverless compatibility (ephemeral storage)
+DATA_DIR = Path("/tmp/cms-data") if os.getenv("VERCEL") else Path("data")
 DATA_DIR.mkdir(exist_ok=True)
 
 
