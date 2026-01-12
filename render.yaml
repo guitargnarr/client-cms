@@ -11,6 +11,8 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.11"
+      - key: DATABASE_URL
+        value: "postgresql://neondb_owner:npg_AFNfo3pc9wlE@ep-shy-pond-af1cysnp.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require"
       - key: ADMIN_PASSWORD
         generateValue: true
       - key: CLATER_PASSWORD
@@ -19,4 +21,3 @@ services:
         value: "demo123"
       - key: JW_PASSWORD
         value: "demo123"
-      # DATABASE_URL must be added manually from ourjourney-db
