@@ -22,15 +22,28 @@ DATABASE_URL = os.getenv("DATABASE_URL", "")
 # Use pg8000 driver (pure Python, no compilation needed)
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+pg8000://", 1)
-elif DATABASE_URL.startswith("postgresql://"):
+elif DATABASE_URL.startswith("postgresql://") and "+pg8000" not in DATABASE_URL:
     DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+pg8000://", 1)
+
+# Remove sslmode from URL (pg8000 handles SSL differently)
+if "sslmode=" in DATABASE_URL:
+    # Strip sslmode parameter from URL
+    import re
+    DATABASE_URL = re.sub(r'[\?&]sslmode=[^&]*', '', DATABASE_URL)
+    # Clean up any double ? or trailing ?
+    DATABASE_URL = DATABASE_URL.replace('?&', '?').rstrip('?')
 
 # For local development without database
 if not DATABASE_URL:
     DATABASE_URL = "sqlite:///./cms_data.db"
     engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 else:
-    engine = create_engine(DATABASE_URL)
+    # pg8000 with SSL for cloud databases
+    import ssl
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+    engine = create_engine(DATABASE_URL, connect_args={"ssl_context": ssl_context})
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
