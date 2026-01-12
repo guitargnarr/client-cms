@@ -19,8 +19,11 @@ from sqlalchemy.orm import sessionmaker, Session
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 
 # Handle Railway/Render postgres:// vs postgresql:// URL format
+# Use pg8000 driver (pure Python, no compilation needed)
 if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+pg8000://", 1)
+elif DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+pg8000://", 1)
 
 # For local development without database
 if not DATABASE_URL:
